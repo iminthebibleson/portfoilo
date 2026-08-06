@@ -16,8 +16,8 @@ const roboto = Roboto({
 
 
 export const metadata = {
-  title: "Android 16 UI",
-  description: "Material UI app",
+  title: "Iminthebibleson Hub",
+  description: "Cool shit happens here",
 };
 
 
