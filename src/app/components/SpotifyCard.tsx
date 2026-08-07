@@ -555,9 +555,9 @@ export default function SpotifyCard() {
                   style={{ color: tokens.textSecondary }}
                 >
                   <img
-                    src={np.isNowPlaying ? "/vibe-car.png" : "/epping-car.png"}
+                    src={np.isNowPlaying ? "/vibe-car.png" : "/epping-car.gif"}
                     alt=""
-                    className={`w-7 h-auto ${np.isNowPlaying ? "animate-bounce" : ""}`}
+                    className={`w-8 h-auto ${np.isNowPlaying ? "animate-bounce" : ""}`}
                   />
 
                   {np.isNowPlaying
