@@ -410,7 +410,28 @@ export default function SpotifyCard() {
         @keyframes riseIn { from { opacity: 0; transform: translateY(16px);} to { opacity: 1; transform: translateY(0);} }
         .rise-2 { animation: riseIn 0.6s cubic-bezier(.2,.8,.2,1) 0.08s both; }
         @keyframes artPulse { 0%,100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 0.85; transform: scale(1.05); } }
-        @keyframes bgDrift { 0%,100% { transform: scale(1.15) translate(0,0); } 50% { transform: scale(1.22) translate(-1.5%, 1.5%); } }
+
+        @keyframes bgDrift {
+          0%   { transform: scale(1.2) translate(0%, 0%) rotate(0deg); filter: blur(46px) saturate(1.5) hue-rotate(0deg); }
+          25%  { transform: scale(1.42) translate(-6%, 4%) rotate(4deg); filter: blur(52px) saturate(1.7) hue-rotate(14deg); }
+          50%  { transform: scale(1.5) translate(5%, -6%) rotate(-3deg); filter: blur(56px) saturate(1.8) hue-rotate(-12deg); }
+          75%  { transform: scale(1.35) translate(-4%, -4%) rotate(2deg); filter: blur(50px) saturate(1.65) hue-rotate(8deg); }
+          100% { transform: scale(1.2) translate(0%, 0%) rotate(0deg); filter: blur(46px) saturate(1.5) hue-rotate(0deg); }
+        }
+
+        @keyframes blobFloatA {
+          0%   { transform: translate(-15%, -10%) scale(1); }
+          30%  { transform: translate(35%, 5%) scale(1.4); }
+          55%  { transform: translate(15%, 45%) scale(0.85); }
+          80%  { transform: translate(-25%, 20%) scale(1.2); }
+          100% { transform: translate(-15%, -10%) scale(1); }
+        }
+        @keyframes blobFloatB {
+          0%   { transform: translate(25%, 30%) scale(1.15); }
+          35%  { transform: translate(-25%, -15%) scale(0.8); }
+          65%  { transform: translate(10%, -35%) scale(1.35); }
+          100% { transform: translate(25%, 30%) scale(1.15); }
+        }
       `}</style>
 
       {hasTrack && np.art && (
@@ -422,9 +443,40 @@ export default function SpotifyCard() {
               backgroundImage: `url(${np.art})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              filter: "blur(44px) saturate(1.3)",
-              transform: "scale(1.15)",
-              animation: "bgDrift 14s ease-in-out infinite",
+              filter: "blur(46px) saturate(1.5)",
+              transform: "scale(1.2)",
+              animation: "bgDrift 11s ease-in-out infinite",
+              zIndex: 0,
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: "-30%",
+              width: "70%",
+              height: "70%",
+              borderRadius: "50%",
+              background: `radial-gradient(circle, ${accent.a} 0%, transparent 70%)`,
+              filter: "blur(50px)",
+              opacity: 0.65,
+              mixBlendMode: "screen",
+              animation: "blobFloatA 9s ease-in-out infinite",
+              zIndex: 0,
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "-30%",
+              right: "-20%",
+              width: "65%",
+              height: "65%",
+              borderRadius: "50%",
+              background: `radial-gradient(circle, ${accent.b} 0%, transparent 70%)`,
+              filter: "blur(50px)",
+              opacity: 0.6,
+              mixBlendMode: "screen",
+              animation: "blobFloatB 12s ease-in-out infinite",
               zIndex: 0,
             }}
           />
@@ -433,7 +485,7 @@ export default function SpotifyCard() {
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(165deg, rgba(18,16,22,0.55) 0%, rgba(18,16,22,0.86) 100%)",
+                "linear-gradient(165deg, rgba(18,16,22,0.5) 0%, rgba(18,16,22,0.82) 100%)",
               zIndex: 0,
             }}
           />
@@ -498,13 +550,17 @@ export default function SpotifyCard() {
               </div>
 
               <div className="min-w-0 flex-1">
-                <h2
-                  className="display-font text-xl truncate"
-                  style={{ fontWeight: 600, color: tokens.textPrimary }}
-                  title={np.song}
-                >
-                  {np.song}
-                </h2>
+
+                <div className="tooltip tooltip-bottom" data-tip={np.song}>
+
+                  <h2
+                    className="display-font text-xl truncate"
+                    style={{ fontWeight: 600, color: tokens.textPrimary }}
+                    title={np.song}
+                  >
+                    {np.song}
+                  </h2>
+                </div>
                 <p
                   className="text-sm truncate mt-0.5"
                   style={{ color: tokens.textSecondary }}
@@ -525,7 +581,7 @@ export default function SpotifyCard() {
                 href={np.trackUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="m3-link-btn"
+                className="m3-link-btn mt-7"
                 style={{
                   flexShrink: 0,
                   width: 40,
@@ -535,7 +591,7 @@ export default function SpotifyCard() {
                   alignItems: "center",
                   justifyContent: "center",
                   background: tokens.surface,
-                  color: tokens.lime,
+                  color: `${accent.a}`,
                   transition: "transform 0.18s cubic-bezier(.2,.8,.2,1)",
                 }}
               >
