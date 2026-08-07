@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { HandFist, Contact, ArrowRight, BriefcaseBusiness } from "lucide-react";
 import Hero from "./components/Hero";
 import SpotifyCard from "./components/SpotifyCard";
+import Image from 'next/image'
 
 const tokens = {
   bg: "#121016",
@@ -99,12 +100,12 @@ export default function Home() {
     hour < 5
       ? "Still up?"
       : hour < 12
-      ? "Good morning"
-      : hour < 17
-      ? "Good afternoon"
-      : hour < 21
-      ? "Good evening"
-      : "Good night";
+        ? "Good morning"
+        : hour < 17
+          ? "Good afternoon"
+          : hour < 21
+            ? "Good evening"
+            : "Good night";
   return (
     <main
       style={{
@@ -245,11 +246,12 @@ export default function Home() {
                   className="display-font text-2xl"
                   style={{ fontWeight: 600 }}
                 >
-                  <span className="text-rotate">
+                  <span className="text-rotate w-full">
                     <span>
-                      <span className="display-font text-2xl">Hellur,</span>
+                      <span className="display-font flex items-center gap-0.5 text-2xl"><img src="/wave-car.gif" alt="" className="h-7 w-auto object-contain"/><span>Hellur,</span></span>
                       <span className="display-font text-2xl">Hey,</span>
                       <span className="display-font text-2xl">Yo,</span>
+                      <span className="display-font flex items-center gap-0.5 text-2xl"><img src="/wave-car-2.gif" alt="" className="h-7 w-auto object-contain"/></span>
                     </span>
                   </span>
                   <br /> I'm Iminthebibleson
@@ -432,13 +434,12 @@ export default function Home() {
   btn btn-ghost p-10 md:p-8 join-item w-full
   flex items-center justify-between
   text-left
-  ${
-    index === 0
-      ? "rounded-t-[28px] rounded-b-md"
-      : index === steps.length - 1
-      ? "rounded-t-md rounded-b-[28px]"
-      : "rounded-md"
-  }
+  ${index === 0
+                          ? "rounded-t-[28px] rounded-b-md"
+                          : index === steps.length - 1
+                            ? "rounded-t-md rounded-b-[28px]"
+                            : "rounded-md"
+                        }
 `}
                     >
                       <div className="flex flex-col items-start">

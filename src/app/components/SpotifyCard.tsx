@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AudioLines, ExternalLink } from "lucide-react";
 
-const USER_ID = "842366854697189447";
 const LASTFM_USER = process.env.NEXT_PUBLIC_LASTFM_USER || "iminthebibleson";
 const LASTFM_API_KEY =
   process.env.NEXT_PUBLIC_LASTFM_API_KEY || "ef31cf7df2fe00d992a0a16db1377355";
@@ -322,57 +321,9 @@ async function fetchLastFmNowPlaying() {
 }
 
 export default function SpotifyCard() {
-  const [spotify, setSpotify] = useState(null);
   const [lastfmTrack, setLastfmTrack] = useState(null);
   const [accent, setAccent] = useState({ a: tokens.lime, b: tokens.lavender });
   const [tick, setTick] = useState(0);
-  const wsRef = useRef(null);
-
-  useEffect(() => {
-    let heartbeatInterval;
-    let reconnectTimeout;
-    let closedByUs = false;
-
-    function connect() {
-      const ws = new WebSocket("wss://api.lanyard.rest/socket");
-      wsRef.current = ws;
-
-      ws.onmessage = (event) => {
-        const msg = JSON.parse(event.data);
-
-        if (msg.op === 1) {
-          heartbeatInterval = setInterval(() => {
-            ws.send(JSON.stringify({ op: 3 }));
-          }, msg.d.heartbeat_interval);
-          ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: USER_ID } }));
-        }
-
-        if (
-          msg.op === 0 &&
-          (msg.t === "INIT_STATE" || msg.t === "PRESENCE_UPDATE")
-        ) {
-          const data = msg.d;
-          setSpotify(data.listening_to_spotify ? data.spotify : null);
-        }
-      };
-
-      ws.onclose = () => {
-        clearInterval(heartbeatInterval);
-        if (!closedByUs) reconnectTimeout = setTimeout(connect, 2000);
-      };
-
-      ws.onerror = () => ws.close();
-    }
-
-    connect();
-
-    return () => {
-      closedByUs = true;
-      clearInterval(heartbeatInterval);
-      clearTimeout(reconnectTimeout);
-      wsRef.current?.close();
-    };
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -420,20 +371,7 @@ export default function SpotifyCard() {
     return () => clearInterval(i);
   }, []);
 
-  const np = spotify
-    ? {
-        source: "spotify",
-        song: spotify.song,
-        artist: spotify.artist,
-        album: spotify.album,
-        art: spotify.album_art_url,
-        trackUrl: `https://open.spotify.com/track/${spotify.track_id}`,
-        hasProgress: true,
-        start: spotify.timestamps?.start,
-        end: spotify.timestamps?.end,
-        isNowPlaying: true,
-      }
-    : lastfmTrack;
+  const np = lastfmTrack;
 
   const hasTrack = !!np;
 
@@ -613,24 +551,29 @@ export default function SpotifyCard() {
               />
               <div className="flex justify-between mt-2">
                 <span
-                  className="text-xs"
+                  className="inline-flex items-center gap-0.5 text-xs"
                   style={{ color: tokens.textSecondary }}
                 >
-                  {np.hasProgress
-                    ? formatTime(elapsed)
-                    : np.isNowPlaying
-                    ? "Scrobbling"
+                  <img
+                    src={
+                      np.isNowPlaying
+                        ? "/vibe-car.png"
+                        : "/epping-car.png"
+                    }
+                    alt=""
+                    className="w-7 h-auto"
+                  />
+
+                  {np.isNowPlaying
+                    ? "Listening now"
                     : "Last Played"}
                 </span>
                 <span
-                  className="text-xs"
+                  className="inline-flex items-center gap-1 text-xs"
                   style={{ color: tokens.textSecondary }}
                 >
-                  {np.hasProgress
-                    ? formatTime(duration)
-                    : np.source === "lastfm"
-                    ? "Last.fm"
-                    : "Spotify"}
+                  <svg className="w-auto h-4.5 fill-current" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Last.fm</title><path d="M10.584 17.21l-.88-2.392s-1.43 1.594-3.573 1.594c-1.897 0-3.244-1.649-3.244-4.288 0-3.382 1.704-4.591 3.381-4.591 2.42 0 3.189 1.567 3.849 3.574l.88 2.749c.88 2.666 2.529 4.81 7.285 4.81 3.409 0 5.718-1.044 5.718-3.793 0-2.227-1.265-3.381-3.63-3.931l-1.758-.385c-1.21-.275-1.567-.77-1.567-1.595 0-.934.742-1.484 1.952-1.484 1.32 0 2.034.495 2.144 1.677l2.749-.33c-.22-2.474-1.924-3.492-4.729-3.492-2.474 0-4.893.935-4.893 3.932 0 1.87.907 3.051 3.189 3.601l1.87.44c1.402.33 1.869.907 1.869 1.704 0 1.017-.99 1.43-2.86 1.43-2.776 0-3.93-1.457-4.59-3.464l-.907-2.75c-1.155-3.573-2.997-4.893-6.653-4.893C2.144 5.333 0 7.89 0 12.233c0 4.18 2.144 6.434 5.993 6.434 3.106 0 4.591-1.457 4.591-1.457z" /></svg>
+                  {np.hasProgress ? formatTime(duration) : ""}
                 </span>
               </div>
             </div>
