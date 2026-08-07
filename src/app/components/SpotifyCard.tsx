@@ -5,7 +5,8 @@ import { AudioLines, ExternalLink } from "lucide-react";
 
 const USER_ID = "842366854697189447";
 const LASTFM_USER = process.env.NEXT_PUBLIC_LASTFM_USER || "iminthebibleson";
-const LASTFM_API_KEY = process.env.NEXT_PUBLIC_LASTFM_API_KEY || "ef31cf7df2fe00d992a0a16db1377355";
+const LASTFM_API_KEY =
+  process.env.NEXT_PUBLIC_LASTFM_API_KEY || "ef31cf7df2fe00d992a0a16db1377355";
 const LASTFM_POLL_MS = 15000;
 
 const tokens = {
@@ -39,7 +40,6 @@ function Squircle({ children, size = 56, style = {} }) {
   );
 }
 
-// --- dynamic color from album art ---
 function extractPalette(imgUrl) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -57,7 +57,10 @@ function extractPalette(imgUrl) {
         let maxSat = -1;
         let vibrant = [198, 255, 107];
         for (let i = 0; i < data.length; i += 4) {
-          const rr = data[i], gg = data[i + 1], bb = data[i + 2], aa = data[i + 3];
+          const rr = data[i],
+            gg = data[i + 1],
+            bb = data[i + 2],
+            aa = data[i + 3];
           if (aa < 125) continue;
           const max = Math.max(rr, gg, bb);
           const min = Math.min(rr, gg, bb);
@@ -78,17 +81,28 @@ function extractPalette(imgUrl) {
 }
 
 function rgbToHsl([r, g, b]) {
-  r /= 255; g /= 255; b /= 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h, s, l = (max + min) / 2;
-  if (max === min) { h = s = 0; }
-  else {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b);
+  let h,
+    s,
+    l = (max + min) / 2;
+  if (max === min) {
+    h = s = 0;
+  } else {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      default: h = (r - g) / d + 4;
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      default:
+        h = (r - g) / d + 4;
     }
     h /= 6;
   }
@@ -106,15 +120,19 @@ function hslToHex(h, s, l) {
     return p;
   };
   let r, g, b;
-  if (s === 0) { r = g = b = l; }
-  else {
+  if (s === 0) {
+    r = g = b = l;
+  } else {
     const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p = 2 * l - q;
     r = hue2rgb(p, q, h + 1 / 3);
     g = hue2rgb(p, q, h);
     b = hue2rgb(p, q, h - 1 / 3);
   }
-  const toHex = (v) => Math.round(v * 255).toString(16).padStart(2, "0");
+  const toHex = (v) =>
+    Math.round(v * 255)
+      .toString(16)
+      .padStart(2, "0");
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
@@ -127,7 +145,6 @@ function buildAccent(vibrant) {
   };
 }
 
-// --- wavy Material 3 "expressive" progress track ---
 function buildWavePath(periods, tileWidth, amplitude, mid) {
   let d = `M0 ${mid}`;
 
@@ -145,10 +162,6 @@ function buildWavePath(periods, tileWidth, amplitude, mid) {
 
   return d;
 }
-
-// percent === null means "indeterminate" (no real timestamps available, e.g.
-// Last.fm) — the track renders fully colored and keeps flowing instead of
-// filling up toward a duration we don't actually have.
 function WaveTrack({ percent, accent, isPlaying }) {
   const TILE = 24;
   const PERIODS = 34;
@@ -159,7 +172,14 @@ function WaveTrack({ percent, accent, isPlaying }) {
   const fillPercent = percent === null ? 100 : percent;
 
   return (
-    <div style={{ position: "relative", width: "100%", height: 20, overflow: "hidden" }}>
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: 20,
+        overflow: "hidden",
+      }}
+    >
       <style>{`
         @keyframes waveScroll {
           from { transform: translateX(0); }
@@ -171,10 +191,21 @@ function WaveTrack({ percent, accent, isPlaying }) {
       <svg
         viewBox={`0 0 ${fullWidth} 20`}
         preserveAspectRatio="none"
-        style={{ position: "absolute", inset: 0, width: "200%", height: "100%" }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "200%",
+          height: "100%",
+        }}
         className={isPlaying ? "wave-anim" : ""}
       >
-        <path d={path} fill="none" stroke={tokens.trackMuted} strokeWidth="2" strokeLinecap="round" />
+        <path
+          d={path}
+          fill="none"
+          stroke={tokens.trackMuted}
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
       </svg>
 
       <div
@@ -189,7 +220,10 @@ function WaveTrack({ percent, accent, isPlaying }) {
         <svg
           viewBox={`0 0 ${fullWidth} 20`}
           preserveAspectRatio="none"
-          style={{ width: `${(200 * 100) / Math.max(fillPercent, 0.001)}%`, height: "100%" }}
+          style={{
+            width: `${(200 * 100) / Math.max(fillPercent, 0.001)}%`,
+            height: "100%",
+          }}
           className={isPlaying ? "wave-anim" : ""}
         >
           <defs>
@@ -198,7 +232,13 @@ function WaveTrack({ percent, accent, isPlaying }) {
               <stop offset="100%" stopColor={accent.b} />
             </linearGradient>
           </defs>
-          <path d={path} fill="none" stroke="url(#waveGrad)" strokeWidth="2.5" strokeLinecap="round" />
+          <path
+            d={path}
+            fill="none"
+            stroke="url(#waveGrad)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
         </svg>
       </div>
     </div>
@@ -211,8 +251,6 @@ function formatTime(ms) {
   const s = totalSec % 60;
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
-
-// --- Material 3 "cookie" mask, smooth curved lobes ---
 function buildCookiePath(size, lobes = 12, outerFrac = 0.5, innerFrac = 0.41) {
   const cx = size / 2;
   const cy = size / 2;
@@ -232,7 +270,9 @@ function buildCookiePath(size, lobes = 12, outerFrac = 0.5, innerFrac = 0.41) {
   for (let k = 1; k <= lobes; k++) {
     const peak = pts[(2 * k) % total];
     const valley = pts[(2 * k + 1) % total];
-    d += `Q ${fmt(peak[0])},${fmt(peak[1])} ${fmt(valley[0])},${fmt(valley[1])} `;
+    d += `Q ${fmt(peak[0])},${fmt(peak[1])} ${fmt(valley[0])},${fmt(
+      valley[1]
+    )} `;
   }
   d += "Z";
 
@@ -242,7 +282,6 @@ function buildCookiePath(size, lobes = 12, outerFrac = 0.5, innerFrac = 0.41) {
 const COOKIE_MASK_GLOW = buildCookiePath(96);
 const COOKIE_MASK_IMG = buildCookiePath(76);
 
-// --- Last.fm: polled, since there's no push/websocket option here ---
 async function fetchLastFmNowPlaying() {
   if (!LASTFM_API_KEY || !LASTFM_USER) return null;
 
@@ -261,28 +300,19 @@ async function fetchLastFmNowPlaying() {
 
     if (!track) return null;
 
-    const isNowPlaying =
-      track["@attr"]?.nowplaying === "true";
+    const isNowPlaying = track["@attr"]?.nowplaying === "true";
 
     const images = track.image || [];
-    const art =
-      images[images.length - 1]?.["#text"] || "";
+    const art = images[images.length - 1]?.["#text"] || "";
 
     return {
       source: "lastfm",
       song: track.name,
-      artist:
-        track.artist?.["#text"] ||
-        track.artist?.name ||
-        "",
+      artist: track.artist?.["#text"] || track.artist?.name || "",
       album: track.album?.["#text"] || "",
       art,
       trackUrl: track.url,
-
-      // NEW
       isNowPlaying,
-
-      // Last.fm doesn't provide duration
       hasProgress: false,
     };
   } catch (e) {
@@ -298,7 +328,6 @@ export default function SpotifyCard() {
   const [tick, setTick] = useState(0);
   const wsRef = useRef(null);
 
-  // live Spotify presence via Lanyard's websocket (gives real start/end timestamps)
   useEffect(() => {
     let heartbeatInterval;
     let reconnectTimeout;
@@ -318,7 +347,10 @@ export default function SpotifyCard() {
           ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: USER_ID } }));
         }
 
-        if (msg.op === 0 && (msg.t === "INIT_STATE" || msg.t === "PRESENCE_UPDATE")) {
+        if (
+          msg.op === 0 &&
+          (msg.t === "INIT_STATE" || msg.t === "PRESENCE_UPDATE")
+        ) {
           const data = msg.d;
           setSpotify(data.listening_to_spotify ? data.spotify : null);
         }
@@ -342,10 +374,6 @@ export default function SpotifyCard() {
     };
   }, []);
 
-  // Last.fm now-playing, polled — used whenever Spotify/Discord isn't reporting.
-  // Polls fast, refreshes the instant the tab regains focus, and pauses while
-  // the tab is hidden (background tabs get throttled by the browser anyway,
-  // so this avoids sitting on a stale track when you switch back).
   useEffect(() => {
     let cancelled = false;
     let intervalId = null;
@@ -387,34 +415,28 @@ export default function SpotifyCard() {
     };
   }, []);
 
-  // keep the wave/time ticking for sources that have real timestamps
   useEffect(() => {
     const i = setInterval(() => setTick((t) => t + 1), 1000);
     return () => clearInterval(i);
   }, []);
 
-  // Spotify (via Lanyard) wins when present since it has real progress data;
-  // otherwise fall back to whatever Last.fm says is currently scrobbling.
   const np = spotify
     ? {
-      source: "spotify",
-      song: spotify.song,
-      artist: spotify.artist,
-      album: spotify.album,
-      art: spotify.album_art_url,
-      trackUrl: `https://open.spotify.com/track/${spotify.track_id}`,
-      hasProgress: true,
-      start: spotify.timestamps?.start,
-      end: spotify.timestamps?.end,
-      isNowPlaying: true,
-    }
+        source: "spotify",
+        song: spotify.song,
+        artist: spotify.artist,
+        album: spotify.album,
+        art: spotify.album_art_url,
+        trackUrl: `https://open.spotify.com/track/${spotify.track_id}`,
+        hasProgress: true,
+        start: spotify.timestamps?.start,
+        end: spotify.timestamps?.end,
+        isNowPlaying: true,
+      }
     : lastfmTrack;
 
-
-  // Card is active even when it's the last played song
   const hasTrack = !!np;
 
-  // Actual playback state
   const isPlaying = np?.isNowPlaying ?? false;
 
   useEffect(() => {
@@ -472,7 +494,8 @@ export default function SpotifyCard() {
             style={{
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(165deg, rgba(18,16,22,0.55) 0%, rgba(18,16,22,0.86) 100%)",
+              background:
+                "linear-gradient(165deg, rgba(18,16,22,0.55) 0%, rgba(18,16,22,0.86) 100%)",
               zIndex: 0,
             }}
           />
@@ -483,10 +506,16 @@ export default function SpotifyCard() {
         {!hasTrack ? (
           <div className="flex items-start justify-between">
             <div>
-              <h2 className="display-font text-2xl" style={{ fontWeight: 600, color: tokens.textPrimary }}>
+              <h2
+                className="display-font text-2xl"
+                style={{ fontWeight: 600, color: tokens.textPrimary }}
+              >
                 Nothing Playing
               </h2>
-              <p className="mt-2 text-sm" style={{ color: tokens.textSecondary }}>
+              <p
+                className="mt-2 text-sm"
+                style={{ color: tokens.textSecondary }}
+              >
                 Check back later
               </p>
             </div>
@@ -498,7 +527,14 @@ export default function SpotifyCard() {
         ) : (
           <div>
             <div className="flex items-center gap-4">
-              <div style={{ position: "relative", width: 76, height: 76, flexShrink: 0 }}>
+              <div
+                style={{
+                  position: "relative",
+                  width: 76,
+                  height: 76,
+                  flexShrink: 0,
+                }}
+              >
                 <div
                   style={{
                     position: "absolute",
@@ -531,10 +567,18 @@ export default function SpotifyCard() {
                 >
                   {np.song}
                 </h2>
-                <p className="text-sm truncate mt-0.5" style={{ color: tokens.textSecondary }} title={np.artist}>
+                <p
+                  className="text-sm truncate mt-0.5"
+                  style={{ color: tokens.textSecondary }}
+                  title={np.artist}
+                >
                   {np.artist}
                 </p>
-                <p className="text-xs truncate mt-0.5" style={{ color: tokens.textSecondary, opacity: 0.7 }} title={np.album}>
+                <p
+                  className="text-xs truncate mt-0.5"
+                  style={{ color: tokens.textSecondary, opacity: 0.7 }}
+                  title={np.album}
+                >
                   {np.album}
                 </p>
               </div>
@@ -562,17 +606,31 @@ export default function SpotifyCard() {
             </div>
 
             <div className="mt-5">
-              <WaveTrack percent={percent} accent={accent} isPlaying={isPlaying} />
+              <WaveTrack
+                percent={percent}
+                accent={accent}
+                isPlaying={isPlaying}
+              />
               <div className="flex justify-between mt-2">
-                <span className="text-xs" style={{ color: tokens.textSecondary }}>
+                <span
+                  className="text-xs"
+                  style={{ color: tokens.textSecondary }}
+                >
                   {np.hasProgress
                     ? formatTime(elapsed)
                     : np.isNowPlaying
-                      ? "Scrobbling"
-                      : "Last Played"}
+                    ? "Scrobbling"
+                    : "Last Played"}
                 </span>
-                <span className="text-xs" style={{ color: tokens.textSecondary }}>
-                  {np.hasProgress ? formatTime(duration) : np.source === "lastfm" ? "Last.fm" : "Spotify"}
+                <span
+                  className="text-xs"
+                  style={{ color: tokens.textSecondary }}
+                >
+                  {np.hasProgress
+                    ? formatTime(duration)
+                    : np.source === "lastfm"
+                    ? "Last.fm"
+                    : "Spotify"}
                 </span>
               </div>
             </div>

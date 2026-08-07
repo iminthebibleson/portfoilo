@@ -43,14 +43,23 @@ function extractPalette(imgUrl) {
         ctx.drawImage(img, 0, 0, size, size);
         const data = ctx.getImageData(0, 0, size, size).data;
 
-        let r = 0, g = 0, b = 0, count = 0;
+        let r = 0,
+          g = 0,
+          b = 0,
+          count = 0;
         let maxSat = -1;
         let vibrant = [0, 0, 0];
 
         for (let i = 0; i < data.length; i += 4) {
-          const rr = data[i], gg = data[i + 1], bb = data[i + 2], aa = data[i + 3];
+          const rr = data[i],
+            gg = data[i + 1],
+            bb = data[i + 2],
+            aa = data[i + 3];
           if (aa < 125) continue;
-          r += rr; g += gg; b += bb; count++;
+          r += rr;
+          g += gg;
+          b += bb;
+          count++;
 
           const max = Math.max(rr, gg, bb);
           const min = Math.min(rr, gg, bb);
@@ -76,17 +85,28 @@ function extractPalette(imgUrl) {
 }
 
 function rgbToHsl([r, g, b]) {
-  r /= 255; g /= 255; b /= 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h, s, l = (max + min) / 2;
-  if (max === min) { h = s = 0; }
-  else {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b);
+  let h,
+    s,
+    l = (max + min) / 2;
+  if (max === min) {
+    h = s = 0;
+  } else {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      default: h = (r - g) / d + 4;
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      default:
+        h = (r - g) / d + 4;
     }
     h /= 6;
   }
@@ -104,19 +124,22 @@ function hslToHex(h, s, l) {
     return p;
   };
   let r, g, b;
-  if (s === 0) { r = g = b = l; }
-  else {
+  if (s === 0) {
+    r = g = b = l;
+  } else {
     const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p = 2 * l - q;
     r = hue2rgb(p, q, h + 1 / 3);
     g = hue2rgb(p, q, h);
     b = hue2rgb(p, q, h - 1 / 3);
   }
-  const toHex = (v) => Math.round(v * 255).toString(16).padStart(2, "0");
+  const toHex = (v) =>
+    Math.round(v * 255)
+      .toString(16)
+      .padStart(2, "0");
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
-// build a vivid, legible two-color pair seeded by the extracted color
 function buildDynamicPalette(pixels) {
   if (!pixels) return { a: tokens.fallbackA, b: tokens.fallbackB };
   const seed =
@@ -134,10 +157,12 @@ export default function Hero() {
   const [username, setUsername] = useState("");
   const [status, setStatus] = useState("offline");
   const [mounted, setMounted] = useState(false);
-  const [palette, setPalette] = useState({ a: tokens.fallbackA, b: tokens.fallbackB });
+  const [palette, setPalette] = useState({
+    a: tokens.fallbackA,
+    b: tokens.fallbackB,
+  });
   const wsRef = useRef(null);
 
-  // live status + presence via Lanyard's websocket (auto-updates whenever it changes)
   useEffect(() => {
     let heartbeatInterval;
     let reconnectTimeout;
@@ -158,10 +183,15 @@ export default function Hero() {
           ws.send(JSON.stringify({ op: 2, d: { subscribe_to_id: USER_ID } }));
         }
 
-        if (msg.op === 0 && (msg.t === "INIT_STATE" || msg.t === "PRESENCE_UPDATE")) {
+        if (
+          msg.op === 0 &&
+          (msg.t === "INIT_STATE" || msg.t === "PRESENCE_UPDATE")
+        ) {
           const data = msg.d;
           setStatus(data.discord_status || "offline");
-          setUsername(data.discord_user.global_name || data.discord_user.username);
+          setUsername(
+            data.discord_user.global_name || data.discord_user.username
+          );
           setAvatarUrl(
             `https://cdn.discordapp.com/avatars/${USER_ID}/${data.discord_user.avatar}.png?size=512`
           );
@@ -306,7 +336,11 @@ export default function Hero() {
             <div className="flex flex-col items-center gap-2">
               <h2
                 className="display-font text-2xl"
-                style={{ fontWeight: 700, letterSpacing: "-0.01em", color: tokens.textPrimary }}
+                style={{
+                  fontWeight: 700,
+                  letterSpacing: "-0.01em",
+                  color: tokens.textPrimary,
+                }}
               >
                 {username}
               </h2>

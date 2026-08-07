@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  HandFist,
-  Contact,
-  ArrowRight,
-  BriefcaseBusiness,
-} from "lucide-react";
+import { HandFist, Contact, ArrowRight, BriefcaseBusiness } from "lucide-react";
 import Hero from "./components/Hero";
 import SpotifyCard from "./components/SpotifyCard";
 
@@ -61,10 +56,8 @@ function Squircle({ children, size = 56, style = {} }) {
 function getLocalTimeDifference(baseHour = 0, baseMinute = 0) {
   const now = new Date();
 
-  // Your timezone
   const yourTimeZone = "America/New_York";
 
-  // Create a date at your selected time today
   const yourDate = new Date(
     now.toLocaleString("en-US", {
       timeZone: yourTimeZone,
@@ -73,7 +66,6 @@ function getLocalTimeDifference(baseHour = 0, baseMinute = 0) {
 
   yourDate.setHours(baseHour, baseMinute, 0, 0);
 
-  // Get visitor timezone
   const visitorTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const visitorTime = new Intl.DateTimeFormat("en-US", {
@@ -208,6 +200,31 @@ export default function Home() {
           </h1>
 
           <Hero />
+
+          <div className="flex flex-wrap justify-center gap-3">
+            <div className="join gap-2">
+              <a
+                style={{
+                  background: tokens.surface,
+                  backdropFilter: "blur(20px)",
+                }}
+                className="btn btn-ghost p-6 rounded-r-md rounded-l-[28px] join-item btn-active"
+              >
+                This page
+              </a>
+
+              <a
+                href="/other"
+                style={{
+                  background: tokens.surface,
+                  backdropFilter: "blur(20px)",
+                }}
+                className="btn btn-ghost p-6 rounded-l-md rounded-r-[28px] join-item"
+              >
+                Misc stuff
+              </a>
+            </div>
+          </div>
         </section>
 
         {/* Cards */}
@@ -251,10 +268,10 @@ export default function Home() {
                   {getLocalTimeDifference(0, 0)}
                 </div>
               </div>
-            <div className="absolute top-6 right-6">
-              <Squircle size={60} style={{ background: tokens.limeDark }}>
-                <HandFist size={26} color={tokens.lavender} />
-              </Squircle>
+              <div className="absolute top-6 right-6">
+                <Squircle size={60} style={{ background: tokens.limeDark }}>
+                  <HandFist size={26} color={tokens.lavender} />
+                </Squircle>
               </div>
             </div>
           </div>
@@ -491,13 +508,15 @@ export default function Home() {
                 style={{ fontWeight: 600 }}
               >
                 Contacts
-
                 <div
                   className=" text-sm"
                   style={{ color: tokens.textSecondary }}
                 >
-               Thanks to <a href="https://lamp.delivery" className="link ">Lamp.delivery</a> for the UI Idea!
- 
+                  Thanks to{" "}
+                  <a href="https://lamp.delivery" className="link ">
+                    Lamp.delivery
+                  </a>{" "}
+                  for the UI Idea!
                 </div>
               </h2>
 
