@@ -27,8 +27,6 @@ const statusColor = {
   offline: "#6E6878",
 };
 
-// pull a seed color from the avatar, then derive a Material-You-style
-// two-tone palette from it (same idea Android uses on your wallpaper)
 function extractPalette(imgUrl) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -317,7 +315,7 @@ export default function Hero() {
 
             <img
               src={avatarUrl}
-              className="aura aura-dual aura-md"
+              className="aura aura-gold aura-md"
               alt="Discord Avatar"
               style={{
                 color: `${palette.a}`,
