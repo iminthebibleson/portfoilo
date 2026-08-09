@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Clock3, ArrowLeft } from "lucide-react";
+import SongRanking from "../components/other/SongRanking";
+import CurrentActivity from "../components/other/CurrentActivity";
+import FooterList from "../components/home/FooterList";
 
 const tokens = {
   bg: "#121016",
@@ -113,52 +114,328 @@ export default function ComingSoon() {
         }}
       />
 
-      <div
-        style={{ position: "relative", maxWidth: 560, margin: "0 auto" }}
-        className="w-full"
-      >
-        <div
-          className="p-8 md:p-10 card-hover rise-1 text-center"
-          style={{
-            borderRadius: 28,
-            background: tokens.surface,
-            border: `1px solid ${tokens.surfaceBorder}`,
-            backdropFilter: "blur(20px)",
-          }}
-        >
-          <div className="flex justify-center mb-5">
-            <Squircle size={68} style={{ background: tokens.limeDark }}>
-              <Clock3 size={30} color={tokens.lavender} />
-            </Squircle>
-          </div>
-
+      <div style={{ position: "relative", maxWidth: 960, margin: "0 auto" }}>
+        {/* Header */}
+        <section className="mb-10 rise-1">
           <h1
-            className="display-font text-4xl md:text-5xl"
+            className="display-font text-center mb-10 text-4xl md:text-5xl"
             style={{
               fontWeight: 700,
               letterSpacing: "-0.02em",
               lineHeight: 1.05,
             }}
           >
-            Coming soon
+            Misc
           </h1>
 
-          <p className="mt-4" style={{ color: tokens.textSecondary }}>
-            Still making this page so for now just sit and wait ig
-          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <div className="join gap-2">
+              <a
+                href="/"
+                style={{
+                  background: tokens.surface,
+                  backdropFilter: "blur(20px)",
+                }}
+                className="btn btn-ghost p-6 rounded-r-md rounded-l-[28px] join-item"
+              >
+                Home
+              </a>
 
-          <div className="mt-8 flex justify-center rise-2">
-            <a
-              href="/"
-              style={{
-                background: tokens.surface,
-                backdropFilter: "blur(20px)",
-              }}
-              className="btn btn-ghost m3-btn p-6 rounded-[28px] gap-2"
-            >
-              <ArrowLeft size={18} />
-              Go back
-            </a>
+              <a
+                href="/other"
+                style={{
+                  background: tokens.surface,
+                  backdropFilter: "blur(20px)",
+                }}
+                className="btn btn-ghost p-6 rounded-l-md rounded-r-[28px] join-item btn-active btn-disabled"
+              >
+                This page
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Cards */}
+        <div className="grid gap-5 grid-cols-1 md:grid-cols-2">
+          {/* Status */}
+
+          <div
+            className="p-6"
+            style={{
+              borderRadius: 28,
+              background: tokens.surface,
+              border: `1px solid ${tokens.surfaceBorder}`,
+              backdropFilter: "blur(20px)",
+            }}
+          >
+            <div className="space-y-3">
+              <h2 className="display-font text-2xl" style={{ fontWeight: 600 }}>
+                Favorite Games
+              </h2>
+
+              <CurrentActivity />
+
+              <a
+                href="#"
+                className="group flex items-center  p-4 gap-4"
+                style={{
+                  borderRadius: 28,
+                  background: tokens.surface,
+                  border: `1px solid ${tokens.surfaceBorder}`,
+                  backdropFilter: "blur(20px)",
+                }}
+              >
+                <img src="/dyinglight2.png" alt="" className="h-14 w-14 " />
+
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-semibold text-white">
+                    Dying Light 2
+                  </h3>
+                  <p className=" text-xs text-[#9C96A5]">
+                    Love all there games lowk
+                  </p>
+                </div>
+              </a>
+
+              <a
+                href="#"
+                className="group flex items-center p-4 gap-4"
+                style={{
+                  borderRadius: 28,
+                  background: tokens.surface,
+                  border: `1px solid ${tokens.surfaceBorder}`,
+                  backdropFilter: "blur(20px)",
+                }}
+              >
+                <img src="/minecraft.png" alt="" className="h-14 w-14 " />
+
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-semibold text-white">
+                    Minecraft Java/Bedrock
+                  </h3>
+                  <p className=" text-xs text-[#9C96A5]">Cave go brrr</p>
+                </div>
+              </a>
+
+              <a
+                href="#"
+                className="group flex items-center p-4 gap-4"
+                style={{
+                  borderRadius: 28,
+                  background: tokens.surface,
+                  border: `1px solid ${tokens.surfaceBorder}`,
+                  backdropFilter: "blur(20px)",
+                }}
+              >
+                <img src="/schedule1.png" alt="" className="h-14 w-14 " />
+
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-semibold text-white">
+                    Schedule 1
+                  </h3>
+                  <p className=" text-xs text-[#9C96A5]">Cops don't play man</p>
+                </div>
+              </a>
+
+              <a
+                href="#"
+                className="group flex items-center p-4 gap-4"
+                style={{
+                  borderRadius: 28,
+                  background: tokens.surface,
+                  border: `1px solid ${tokens.surfaceBorder}`,
+                  backdropFilter: "blur(20px)",
+                }}
+              >
+                <img src="/weedshop3.webp" alt="" className="h-14 " />
+
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-semibold text-white">
+                    Weed Shop 3
+                  </h3>
+                  <p className=" text-xs text-[#9C96A5]">Love the grind</p>
+                </div>
+              </a>
+
+              <a
+                href="#"
+                className="group flex items-center p-4 gap-4"
+                style={{
+                  borderRadius: 28,
+                  background: tokens.surface,
+                  border: `1px solid ${tokens.surfaceBorder}`,
+                  backdropFilter: "blur(20px)",
+                }}
+              >
+                <img src="/beamng.png" alt="" className="h-14 " />
+
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-semibold text-white">
+                    Beam.NG
+                  </h3>
+                  <p className=" text-xs text-[#9C96A5]">
+                    Learned how to do hit-n-runs
+                  </p>
+                </div>
+              </a>
+
+              <a
+                href="#"
+                className="group flex items-center p-4 gap-4"
+                style={{
+                  borderRadius: 28,
+                  background: tokens.surface,
+                  border: `1px solid ${tokens.surfaceBorder}`,
+                  backdropFilter: "blur(20px)",
+                }}
+              >
+                <img src="/bo2.png" alt="" className="h-14 " />
+
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-semibold text-white">
+                    Call of Duty: Warzone/BO2/soon MW4
+                  </h3>
+                  <p className=" text-xs text-[#9C96A5]">
+                    Can't wait for MW4 better be good
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          {/* Lets see */}
+
+          <div
+            className="p-6 card-hover  rise-2 md:row-span-3"
+            style={{
+              borderRadius: 28,
+              background: tokens.surface,
+              border: `1px solid ${tokens.surfaceBorder}`,
+              backdropFilter: "blur(20px)",
+            }}
+          >
+            <div className=" items-start justify-between space-y-4">
+                <h2
+                  className="display-font text-2xl"
+                  style={{ fontWeight: 600 }}
+                >
+                  Recommended Projects
+                </h2>
+
+
+
+                <div className="card shadow-sm" style={{
+                  borderRadius: 28,
+                  background: tokens.surface,
+                  border: `1px solid ${tokens.surfaceBorder}`,
+                  backdropFilter: "blur(20px)",
+                }}>
+                  <figure className="">
+                    <img
+                      src="/metrolist.png"
+                      alt="MOOSIC"
+                      className="w-30" />
+                  </figure>
+                  <div className="card-body items-center text-center">
+                    <h2 className="card-title">Metrolist</h2>
+                    <p>My favorite new way of listening to all the music i listen to after getting banned from spotify a lot times</p>
+                    <div className="card-actions">
+                      <a
+                      href="https://metrolist.cc"
+                        style={{
+                          background: tokens.surface,
+                          backdropFilter: "blur(20px)",
+                        }}
+                        className="btn btn-ghost p-6 rounded-[28px] join-item "
+                      >
+                        Visit project
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card shadow-sm" style={{
+                  borderRadius: 28,
+                  background: tokens.surface,
+                  border: `1px solid ${tokens.surfaceBorder}`,
+                  backdropFilter: "blur(20px)",
+                }}>
+                  <figure className="">
+                    <img
+                      src="/equibop.png"
+                      alt="MOOSIC"
+                      className="w-30" />
+                  </figure>
+                  <div className="card-body items-center text-center">
+                    <h2 className="card-title">Equibop</h2>
+                    <p>A fork of Vencord but has much more plugins</p>
+                    <div className="card-actions">
+                      <a
+                      href="https://equibop.org"
+                        style={{
+                          background: tokens.surface,
+                          backdropFilter: "blur(20px)",
+                        }}
+                        className="btn btn-ghost p-6 rounded-[28px] join-item "
+                      >
+                        Visit project
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+
+                          <div className="divider">More later on</div>
+
+
+
+            </div>
+          </div>
+
+          {/* Lets see */}
+
+          <div
+            className="p-6 card-hover rise-2"
+            style={{
+              borderRadius: 28,
+              background: tokens.surface,
+              border: `1px solid ${tokens.surfaceBorder}`,
+              backdropFilter: "blur(20px)",
+            }}
+          >
+            <SongRanking />
+          </div>
+
+          <div
+            className="p-6 card-hover  rise-2 md:col-span-2"
+            style={{
+              borderRadius: 28,
+              background: `linear-gradient(135deg, ${tokens.lavenderDark} 0%, ${tokens.limeDark} 120%)`,
+              border: `1px solid ${tokens.surfaceBorder}`,
+              backdropFilter: "blur(20px)",
+            }}
+          >
+            <div className="flex-row md:flex items-center justify-between w-full">
+                          <h2
+                            className="display-font md:text-left text-center md:mb-0 mb-4 text-2xl"
+                            style={{ fontWeight: 600 }}
+                          >
+                            Contacts
+                            <div
+                              className=" text-sm"
+                              style={{ color: tokens.textSecondary }}
+                            >
+                              Thanks to{" "}
+                              <a href="https://lamp.delivery" className="link ">
+                                Lamp.delivery
+                              </a>{" "}
+                              for the UI Idea!
+                            </div>
+                          </h2>
+            
+                        <FooterList />            
+            
+                        </div>
           </div>
         </div>
       </div>

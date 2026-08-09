@@ -1,5 +1,7 @@
 "use client";
 
+import SongRanking from "../components/other/SongRanking";
+
 
 const tokens = {
     surface: "rgba(255,255,255,0.055)",

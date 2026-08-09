@@ -7,6 +7,7 @@ import FooterList from "./components/home/FooterList";
 import SocialsLinks from "./components/home/SocialsLinks";
 import ProjectsList from "./components/home/ProjectsList";
 import Greeting from "./components/home/Greeting";
+import SectionBackground from "./components/home/SectionBackground";
 
 const tokens = {
   bg: "#121016",
@@ -191,6 +192,7 @@ export default function Home() {
               </a>
             </div>
           </div>
+            <SectionBackground />
         </section>
 
         {/* Cards */}
@@ -269,10 +271,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* temp */}
           <SpotifyCard />
 
-          {/* Battery */}
           <div
             className="p-7 card-hover rise-4 md:col-span-2"
             style={{
