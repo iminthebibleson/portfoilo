@@ -382,9 +382,8 @@ export default function DiscordActivityWidget() {
           {customStatus.emoji?.id && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={`https://cdn.discordapp.com/emojis/${customStatus.emoji.id}.${
-                customStatus.emoji.animated ? "gif" : "png"
-              }`}
+              src={`https://cdn.discordapp.com/emojis/${customStatus.emoji.id}.${customStatus.emoji.animated ? "gif" : "png"
+                }`}
               alt=""
               style={{ width: 24, height: 24 }}
             />

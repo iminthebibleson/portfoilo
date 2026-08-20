@@ -2,6 +2,8 @@
 
 import SongRanking from "../components/other/SongRanking";
 import CurrentActivity from "../components/other/CurrentActivity";
+import Topography from "../components/other/Topography";
+import DiscordInfo from "../components/other/DiscordInfo";
 import FooterList from "../components/home/FooterList";
 
 const tokens = {
@@ -157,6 +159,20 @@ export default function ComingSoon() {
 
         {/* Cards */}
         <div className="grid gap-5 grid-cols-1 md:grid-cols-2">
+
+           <div
+  className="p-6 card-hover rise-2 md:col-span-2 relative overflow-hidden h-fit"
+  style={{
+    borderRadius: 28,
+    background: tokens.surface,
+    border: `1px solid ${tokens.surfaceBorder}`,
+    backdropFilter: "blur(20px)",
+  }}
+>
+
+  <DiscordInfo />
+
+</div>
           {/* Status */}
 
           <div
@@ -172,8 +188,6 @@ export default function ComingSoon() {
               <h2 className="display-font text-2xl" style={{ fontWeight: 600 }}>
                 Favorite Games
               </h2>
-
-              <CurrentActivity />
 
               <a
                 href="#"
@@ -306,7 +320,7 @@ export default function ComingSoon() {
           {/* Lets see */}
 
           <div
-            className="p-6 card-hover  rise-2 md:row-span-3"
+            className="p-6 card-hover  rise-2 md:row-span-2"
             style={{
               borderRadius: 28,
               background: tokens.surface,
@@ -394,6 +408,22 @@ export default function ComingSoon() {
 
           {/* Lets see */}
 
+
+                        <div
+  className="p-6 card-hover rise-2 md:row-span-2 relative overflow-hidden "
+  style={{
+    borderRadius: 28,
+    background: tokens.surface,
+    border: `1px solid ${tokens.surfaceBorder}`,
+    backdropFilter: "blur(20px)",
+  }}
+>
+  <Topography />
+
+</div>
+
+
+
           <div
             className="p-6 card-hover rise-2"
             style={{
@@ -405,6 +435,9 @@ export default function ComingSoon() {
           >
             <SongRanking />
           </div>
+
+         
+
 
           <div
             className="p-6 card-hover  rise-2 md:col-span-2"
