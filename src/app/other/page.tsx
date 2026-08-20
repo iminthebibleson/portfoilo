@@ -410,7 +410,7 @@ export default function ComingSoon() {
 
 
                         <div
-  className="p-6 card-hover rise-2 md:row-span-2 relative overflow-hidden "
+  className="p-6 card-hover rise-2 md:row-span-2 relative h-100 md:h-full overflow-hidden "
   style={{
     borderRadius: 28,
     background: tokens.surface,
