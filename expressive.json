@@ -1,0 +1,30 @@
+{
+  "$schema": "https://expressive.grenishrai.pro/schema.json",
+  "registry": "https://expressive.grenishrai.pro/r",
+  "framework": "next",
+  "rsc": true,
+  "css": "src\\app\\input.css",
+  "motion": "gsap",
+  "theme": {
+    "seed": "#6750A4",
+    "variant": "expressive",
+    "contrast": 0,
+    "font": {
+      "brand": "Roboto Flex",
+      "plain": "Roboto Flex"
+    },
+    "shape": "expressive",
+    "motionScheme": "fluid"
+  },
+  "dirs": {
+    "components": "src/components/expressive",
+    "lib": "src/lib/expressive",
+    "tokens": "src/lib/expressive/tokens",
+    "styles": "src\\app"
+  },
+  "aliases": {
+    "components": "@/components/expressive",
+    "lib": "@/lib/expressive",
+    "tokens": "@/lib/expressive/tokens"
+  }
+}
