@@ -1,6 +1,20 @@
+
 import { useRef, useEffect } from "react";
 
-function resolveClassesToColors(classes: any[], fallbackColor = "currentColor") {
+type TopographyProps = {
+  classes?: string[];
+  background?: string;
+  lineCount?: number;
+  speed?: number;
+  animated?: boolean;
+};
+
+type Point = [number, number];
+
+function resolveClassesToColors(
+  classes: string[],
+  fallbackColor = "currentColor"
+): string[] {
   if (typeof document === "undefined" || !classes?.length) return [];
 
   const probe = document.createElement("span");
@@ -11,15 +25,27 @@ function resolveClassesToColors(classes: any[], fallbackColor = "currentColor") 
 
   const resolved = classes.map((cls) => {
     probe.className = "";
-    // Support passing either "bg-primary", "text-primary", or a raw CSS color
-    if (cls.startsWith("#") || cls.startsWith("rgb") || cls.startsWith("hsl") || cls.startsWith("oklch")) {
+
+    // Support Tailwind/DaisyUI classes or raw CSS colors.
+    if (
+      cls.startsWith("#") ||
+      cls.startsWith("rgb") ||
+      cls.startsWith("hsl") ||
+      cls.startsWith("oklch")
+    ) {
       return cls;
     }
+
     probe.classList.add(cls);
     const styles = getComputedStyle(probe);
-    // Use backgroundColor for bg-* classes, otherwise color
-    const color = cls.startsWith("bg-") ? styles.backgroundColor : styles.color;
-    return color && color !== "rgba(0, 0, 0, 0)" && color !== "transparent"
+
+    const color = cls.startsWith("bg-")
+      ? styles.backgroundColor
+      : styles.color;
+
+    return color &&
+      color !== "rgba(0, 0, 0, 0)" &&
+      color !== "transparent"
       ? color
       : fallbackColor;
   });
@@ -42,28 +68,36 @@ export default function Topography({
   lineCount = 15,
   speed = 0.5,
   animated = true,
-}) {
-  const canvasRef = useRef(null);
+}: TopographyProps) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let raf;
-    let width, height;
 
-    let colors = resolveClassesToColors(classes, "#888888");
-    let resolvedBg =
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let raf: number | undefined;
+    let width = 0;
+    let height = 0;
+
+    let colors: string[] = resolveClassesToColors(classes, "#888888");
+
+    let resolvedBg: string =
       background === "transparent"
         ? "transparent"
-        : resolveClassesToColors([background], background)[0];
+        : resolveClassesToColors([background], background)[0] ??
+          background;
 
-    function mulberry32(a) {
+    function mulberry32(a: number): () => number {
       return function () {
         a |= 0;
         a = (a + 0x6d2b79f5) | 0;
+
         let t = Math.imul(a ^ (a >>> 15), 1 | a);
         t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+
         return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
       };
     }
@@ -75,68 +109,91 @@ export default function Topography({
     const seedX = rand() * 1000;
     const seedY = rand() * 1000;
 
-    function hash(x, y) {
-      const s = Math.sin(x * 127.1 + y * 311.7 + noiseSeed) * 43758.5453123;
+    function hash(x: number, y: number): number {
+      const s =
+        Math.sin(x * 127.1 + y * 311.7 + noiseSeed) *
+        43758.5453123;
+
       return s - Math.floor(s);
     }
 
-    function smooth(t) {
+    function smooth(t: number): number {
       return t * t * (3 - 2 * t);
     }
 
-    function noise(x, y) {
+    function noise(x: number, y: number): number {
       const x0 = Math.floor(x);
       const y0 = Math.floor(y);
+
       const sx = smooth(x - x0);
       const sy = smooth(y - y0);
+
       const n00 = hash(x0, y0);
       const n10 = hash(x0 + 1, y0);
       const n01 = hash(x0, y0 + 1);
       const n11 = hash(x0 + 1, y0 + 1);
+
       const ix0 = n00 + (n10 - n00) * sx;
       const ix1 = n01 + (n11 - n01) * sx;
+
       return ix0 + (ix1 - ix0) * sy;
     }
 
-    function fbm(x, y) {
-      let total = 0,
-        amp = 1,
-        freq = 1,
-        maxAmp = 0;
+    function fbm(x: number, y: number): number {
+      let total = 0;
+      let amp = 1;
+      let freq = 1;
+      let maxAmp = 0;
+
       for (let o = 0; o < 4; o++) {
         total += noise(x * freq, y * freq) * amp;
         maxAmp += amp;
         amp *= 0.5;
         freq *= 2;
       }
+
       return total / maxAmp;
     }
 
-    const bandIndices = [];
-    const bandWidths = [];
+    const bandIndices: number[] = [];
+    const bandWidths: number[] = [];
+
     for (let i = 0; i < lineCount; i++) {
-      bandIndices.push(Math.floor(rand() * Math.max(1, colors.length)));
-      bandWidths.push(rand() < 0.15 ? 2.6 + rand() * 1.4 : 0.8 + rand() * 0.9);
+      bandIndices.push(
+        Math.floor(rand() * Math.max(1, colors.length))
+      );
+
+      bandWidths.push(
+        rand() < 0.15
+          ? 2.6 + rand() * 1.4
+          : 0.8 + rand() * 0.9
+      );
     }
 
-    function resize() {
+    function resize(): void {
       if (!canvas.parentElement) return;
+
       const rect = canvas.parentElement.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
+
       width = rect.width;
       height = rect.height;
+
       canvas.width = Math.max(1, Math.floor(width * dpr));
       canvas.height = Math.max(1, Math.floor(height * dpr));
+
       canvas.style.width = width + "px";
       canvas.style.height = height + "px";
+
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
     let t = 0;
     const cell = 3;
 
-    function draw() {
+    function draw(): void {
       resize();
+
       ctx.clearRect(0, 0, width, height);
 
       if (resolvedBg !== "transparent") {
@@ -149,23 +206,34 @@ export default function Topography({
 
       const cols = Math.ceil(width / cell) + 1;
       const rows = Math.ceil(height / cell) + 1;
+
       const field = new Float32Array(cols * rows);
 
       const scale = 0.007;
+
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
           const nx = (x * cell + seedX * 100) * scale;
           const ny = (y * cell + seedY * 100) * scale;
+
           const v =
             fbm(nx, ny + t * 0.1) +
-            fbm(nx * 2.3 + 5.2, ny * 2.3 - 3.1 + t * 0.05) * 0.3;
+            fbm(
+              nx * 2.3 + 5.2,
+              ny * 2.3 - 3.1 + t * 0.05
+            ) * 0.3;
+
           field[y * cols + x] = v;
         }
       }
 
       for (let band = 0; band < lineCount; band++) {
         const threshold = (band + 0.5) / lineCount;
-        ctx.strokeStyle = colors[bandIndices[band] % colors.length] || "currentColor";
+
+        ctx.strokeStyle =
+          colors[bandIndices[band] % colors.length] ||
+          "currentColor";
+
         ctx.lineWidth = bandWidths[band];
         ctx.beginPath();
 
@@ -181,19 +249,38 @@ export default function Topography({
               (b >= threshold ? 4 : 0) |
               (c >= threshold ? 2 : 0) |
               (d >= threshold ? 1 : 0);
+
             if (state === 0 || state === 15) continue;
 
             const px = x * cell;
             const py = y * cell;
-            const lerp = (v0, v1) =>
-              v1 - v0 !== 0 ? (threshold - v0) / (v1 - v0) : 0.5;
 
-            const T = [px + lerp(a, b) * cell, py];
-            const R = [px + cell, py + lerp(b, c) * cell];
-            const B = [px + lerp(d, c) * cell, py + cell];
-            const L = [px, py + lerp(a, d) * cell];
+            const lerp = (v0: number, v1: number): number =>
+              v1 - v0 !== 0
+                ? (threshold - v0) / (v1 - v0)
+                : 0.5;
 
-            const line = (p1, p2) => {
+            const T: Point = [
+              px + lerp(a, b) * cell,
+              py,
+            ];
+
+            const R: Point = [
+              px + cell,
+              py + lerp(b, c) * cell,
+            ];
+
+            const B: Point = [
+              px + lerp(d, c) * cell,
+              py + cell,
+            ];
+
+            const L: Point = [
+              px,
+              py + lerp(a, d) * cell,
+            ];
+
+            const line = (p1: Point, p2: Point): void => {
               ctx.moveTo(p1[0], p1[1]);
               ctx.lineTo(p2[0], p2[1]);
             };
@@ -213,6 +300,7 @@ export default function Topography({
                 break;
               case 5: {
                 const avg = (a + b + c + d) / 4;
+
                 if (avg >= threshold) {
                   line(T, L);
                   line(B, R);
@@ -236,6 +324,7 @@ export default function Topography({
                 break;
               case 10: {
                 const avg = (a + b + c + d) / 4;
+
                 if (avg >= threshold) {
                   line(T, R);
                   line(L, B);
@@ -262,6 +351,7 @@ export default function Topography({
             }
           }
         }
+
         ctx.stroke();
       }
 
@@ -271,17 +361,21 @@ export default function Topography({
       }
     }
 
-    function refreshThemeColors() {
+    function refreshThemeColors(): void {
       colors = resolveClassesToColors(classes, "#888888");
+
       resolvedBg =
         background === "transparent"
           ? "transparent"
-          : resolveClassesToColors([background], background)[0];
+          : resolveClassesToColors([background], background)[0] ??
+            background;
+
       if (!animated) draw();
     }
 
-    // Re-read DaisyUI theme tokens when `data-theme` or root classes change
+    // Re-read DaisyUI theme tokens when the theme changes.
     const observer = new MutationObserver(refreshThemeColors);
+
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme", "class"],
@@ -289,13 +383,17 @@ export default function Topography({
 
     draw();
 
-    function handleResize() {
+    function handleResize(): void {
       if (!animated) draw();
     }
+
     window.addEventListener("resize", handleResize);
 
     return () => {
-      if (raf) cancelAnimationFrame(raf);
+      if (raf !== undefined) {
+        cancelAnimationFrame(raf);
+      }
+
       observer.disconnect();
       window.removeEventListener("resize", handleResize);
     };
@@ -313,6 +411,5 @@ export default function Topography({
         }}
       />
     </div>
-
   );
 }
