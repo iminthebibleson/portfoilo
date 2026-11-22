@@ -74,7 +74,7 @@ export default function FieldOne() {
                             <ConnectedButton
                                 className="bg-secondary! text-secondary-content!"
                                 nativeButton={false}
-                                render={<Link href="https://equibop.org" />} value={""}
+                                render={<Link href="https://www.minecraft3ds.org" />} value={""}
                             >
                                 Visit Project
                             </ConnectedButton >
