@@ -26,7 +26,7 @@ export default function SeasonalSnowfall() {
         snowflakeShape="dot"
         snowflakeCount={60}
         wind={{ min: -0.8, max: 0.8 }}
-        followMouse={true}
+        followMouse={false}
         gravity={0.4}
         fadeEdges={true}
       />

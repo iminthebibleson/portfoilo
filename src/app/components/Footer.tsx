@@ -3,7 +3,7 @@
 import { ButtonGroup, ConnectedButton, ConnectedButtonGroup } from "@/components/expressive/button-group";
 import Link from "next/link";
 
-export default function FieldFour() {
+export default function Footer() {
   return (
     <div className="relative bg-base-300 mt-5 mb-5 p-6 rounded-box md:col-span-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>

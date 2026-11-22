@@ -2,13 +2,13 @@
 
 import ThemePaletteController from "./components/ThemePaletteController";
 import Link from "next/link";
-import HeroBanner from "./components/HeroBanner";
-import FieldOne from "./components/FieldOne";
-import FieldTwo from "./components/FieldTwo";
-import FieldThree from "./components/FieldThree";
-import Music from "./components/Music";
-import FieldFour from "./components/FieldFour";
-import SectionBackground from "./components/SectionBackground";
+import HeroBanner from "./components/home/HeroBanner";
+import FieldOne from "./components/home/FieldOne";
+import FieldTwo from "./components/home/FieldTwo";
+import FieldThree from "./components/home/FieldThree";
+import Music from "./components/home/Music";
+import Footer from "./components/Footer";
+import SectionBackground from "./components/home/SectionBackground";
 import { ConnectedButton, ConnectedButtonGroup } from "@/components/expressive/button-group";
 import Snow from "./components/Snow";
 import { useRef, useState } from "react";
@@ -96,7 +96,8 @@ export default function Home() {
 
             <ConnectedButton
               className="bg-primary! text-primary-content!"
-              onClick={showMessageToast}
+              nativeButton={false}
+              render={<Link href="/other" />} value={""}
             >
               Misc Stuff
             </ConnectedButton >
@@ -111,7 +112,7 @@ export default function Home() {
             <FieldTwo />
             <Music />
             <FieldThree />
-            <FieldFour />
+            <Footer />
           </div>
         </div>
       </main>

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Iminthebibleson Hub",
     description: "Cool shit happens here",
-    url: "https://iminthebibleson-tau.vercel.app",
+    url: "https://iminthebibleson.vercel.app",
     siteName: "Iminthebibleson Hub",
     images: [
       {
